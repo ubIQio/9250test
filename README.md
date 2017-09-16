@@ -1,7 +1,7 @@
-mpu6050TestInC
+MPU9250test
 ==============
 
-simple raspberry pi  program in C to test the mpu6050
+simple raspberry pi  program in C to test the mpu9250
 
 
  just do gcc -lm -o AccTest AccTest.c mpu6050.c I2CWrapper.c
