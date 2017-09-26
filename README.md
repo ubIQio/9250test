@@ -1,11 +1,11 @@
-mpu6050TestInC
+MPU9255Test
 ==============
 
-simple raspberry pi  program in C to test the mpu6050
+simple raspberry pi  program in C to test the mpu9255
 
 
  just do gcc -lm -o AccTest AccTest.c mpu6050.c I2CWrapper.c
- 
+
 Python Version
 - MPU6050.py&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Interface class for the MPU6050.
 - VibrationTest.py&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Application to detect peak in acceleration.
@@ -18,8 +18,7 @@ C++ Version.  GPU FFT calculating all axis and the absolute vector in parallel.
 - MPU6050.h&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MPU6050 class declaration.
 - myGpuFFT_lib.c&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;My own static library to encapsulate the GPU FFT.
 - myGpuFFT_lib.h&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;header declaration.
- 
+
 &nbsp;&nbsp;&nbsp;To compile just do ,<br>
 &nbsp;&nbsp;&nbsp;cd cpp<br>
 &nbsp;&nbsp;&nbsp;make clean; make all
-
