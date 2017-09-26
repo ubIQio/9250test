@@ -242,7 +242,7 @@ class MPU6050:
       bus.write_byte_data(self.MPU6050_ADDRESS,self.MPU6050_RA_PWR_MGMT_1, 0b00000010)
 
       #Controls frequency of wakeups in accel low power mode plus the sensor standby modes
-      bus.write_byte_data(self.MPU6050_ADDRESS,self.MPU6050_RA_PWR_MGMT_2, 0x00)
+      bus.write_byte_data(self.MPU6050_ADDRESS,self.MPU6050_RA_PWR_MGMT_2, 0b00000111)
 
       bus.write_byte_data(self.MPU6050_ADDRESS,self.MPU6050_RA_INT_ENABLE, 0x01)
 
@@ -308,6 +308,7 @@ class MPU6050:
 
 
    def setSampleRate(self, Rate):
+	  bus.write_byte_data(self.MPU6050_ADDRESS,self.MPU6050_RA_CONFIG,SampleReg)
       SampleReg =  int(( 8000 / Rate) -1)
       self.SampleRate = 8000.0 / (SampleReg + 1.0)
       bus.write_byte_data(self.MPU6050_ADDRESS,self.MPU6050_RA_SMPLRT_DIV,SampleReg)
