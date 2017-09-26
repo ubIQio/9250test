@@ -308,8 +308,8 @@ class MPU6050:
 
 
    def setSampleRate(self, Rate):
-      SampleReg =  int(( 8000 / Rate) -1)
-      self.SampleRate = 8000.0 / (SampleReg + 1.0)
+      SampleReg =  int(( 1000 / Rate) -1)
+      self.SampleRate = 1000.0 / (SampleReg + 1.0)
       bus.write_byte_data(self.MPU6050_ADDRESS,self.MPU6050_RA_SMPLRT_DIV,SampleReg)
 
 
