@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 import smbus
-import struct 
+import struct
 #import array
 import math
 #from ctypes import *
@@ -34,8 +34,8 @@ class MPU6050:
    #converted from Jeff Rowberg code https://github.com/jrowberg/i2cdevlib/blob/master/Arduino/MPU6050/MPU6050.h
 
    MPU6050_ADDRESS=0x68      #default I2C Address
-   
-   #register definition 
+
+   #register definition
 
    MPU6050_RA_XG_OFFS_TC	= 0x00 	# [7] PWR_MODE, [6:1] XG_OFFS_TC, [0] OTP_BNK_VLD
    MPU6050_RA_YG_OFFS_TC	= 0x01  # [7] PWR_MODE, [6:1] YG_OFFS_TC, [0] OTP_BNK_VLD
@@ -150,7 +150,7 @@ class MPU6050:
 
 
 
-  
+
    ZeroRegister = [
       MPU6050_RA_FF_THR, 		#Freefall threshold of |0mg|  LDByteWriteI2C(MPU6050_ADDRESS, MPU6050_RA_FF_THR, 0x00);
       MPU6050_RA_FF_DUR,		#Freefall duration limit of 0   LDByteWriteI2C(MPU6050_ADDRESS, MPU6050_RA_FF_DUR, 0x00);
@@ -228,7 +228,7 @@ class MPU6050:
 
    def setup(self):
 
-      self.setSampleRate(1000)
+      self.setSampleRate(500)
 
       self.setGResolution(2)
 
@@ -243,7 +243,7 @@ class MPU6050:
 
       #Controls frequency of wakeups in accel low power mode plus the sensor standby modes
       bus.write_byte_data(self.MPU6050_ADDRESS,self.MPU6050_RA_PWR_MGMT_2, 0x00)
- 
+
       bus.write_byte_data(self.MPU6050_ADDRESS,self.MPU6050_RA_INT_ENABLE, 0x01)
 
 
@@ -261,7 +261,7 @@ class MPU6050:
         #max block transfer in i2c is 32 bytes including the address
         # accelerometer, gyro and temperature  data=> 7 short  = 14 bytes  => 31 bytes / 14 = 2
         # then it will be 28
-        if (self.fifoCount > 28) : 
+        if (self.fifoCount > 28) :
            nCount = 28
         else:
            nCount = self.fifoCount
@@ -279,7 +279,7 @@ class MPU6050:
 
 
    def convertData(self,ListData):
-      ShortData = struct.unpack(">hhhhhhh", buffer(bytearray(ListData)))
+      ShortData = struct.unpack(">hhh", buffer(bytearray(ListData)))
       #lets create the Data Class
       AccData = MPU6050Data()
 
@@ -288,15 +288,15 @@ class MPU6050:
       AccData.Gx = ShortData[0] * self.AccelerationFactor
       AccData.Gy = ShortData[1] * self.AccelerationFactor
       AccData.Gz = ShortData[2] * self.AccelerationFactor
-      
+
       #temperature
-      AccData.Temperature = ShortData[3] * self.TemperatureGain + self.TemperatureOffset
-      
+      #AccData.Temperature = ShortData[3] * self.TemperatureGain + self.TemperatureOffset
+
       #and the 3 last ar'e the gyro data
 
-      AccData.Gyrox = ShortData[4] * self.GyroFactor
-      AccData.Gyroy = ShortData[5] * self.GyroFactor
-      AccData.Gyroz = ShortData[6] * self.GyroFactor
+      #AccData.Gyrox = ShortData[4] * self.GyroFactor
+      #AccData.Gyroy = ShortData[5] * self.GyroFactor
+      #AccData.Gyroz = ShortData[6] * self.GyroFactor
 
       return AccData
 
@@ -304,7 +304,7 @@ class MPU6050:
    def setGResolution(self, value):
       #use dictionary to get correct G resolution 2,4,8 or 16G
       bus.write_byte_data(self.MPU6050_ADDRESS,self.MPU6050_RA_GYRO_CONFIG,{2 : 0 , 4 : 8 , 8 : 16 , 16 : 24}[value])
-      self.AccelerationFactor= value/32768.0; 
+      self.AccelerationFactor= value/32768.0;
 
 
    def setSampleRate(self, Rate):
@@ -315,9 +315,9 @@ class MPU6050:
 
    def readStatus(self):
       return  bus.read_byte_data(self.MPU6050_ADDRESS,self.MPU6050_RA_INT_STATUS)
-    
+
    def readFifoCount(self):
-      GData=bus.read_i2c_block_data(self.MPU6050_ADDRESS,self.MPU6050_RA_FIFO_COUNTH)
+      GData=bus.read_i2c_block_data(self.MPU6050_ADDRESS,self.MPU6050_RA_FIFO_COUNTH,2)
       self.fifoCount = (GData[0] * 256 + GData[1])
       return self.fifoCount
 
@@ -329,14 +329,11 @@ class MPU6050:
       bus.write_byte_data(self.MPU6050_ADDRESS, self.MPU6050_RA_USER_CTRL,0b00000000)
       pass
       bus.write_byte_data(self.MPU6050_ADDRESS, self.MPU6050_RA_USER_CTRL,0b00000100)
-      pass      
+      pass
       bus.write_byte_data(self.MPU6050_ADDRESS, self.MPU6050_RA_USER_CTRL,0b01000000)
 
    def enableFifo(self,flag):
       bus.write_byte_data(self.MPU6050_ADDRESS, self.MPU6050_RA_FIFO_EN,0)
       if flag:
         self.resetFifo()
-        bus.write_byte_data(self.MPU6050_ADDRESS, self.MPU6050_RA_FIFO_EN,0b11111000)
-       
-
-   
+        bus.write_byte_data(self.MPU6050_ADDRESS, self.MPU6050_RA_FIFO_EN,0b00001000)
