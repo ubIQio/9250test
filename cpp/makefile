@@ -54,7 +54,7 @@ myGpuFFT_lib.a:  $(S) $(CO)
 
 
 MPU6050:	myGpuFFT_lib.a I2CWrapper.o MPU6050.cpp I2CWrapper.cpp
-	g++ -lrt -o MPU6050 MPU6050.cpp I2CWrapper.cpp myGpuFFT_lib.a
+	g++ -ldl -lrt -o MPU6050 MPU6050.cpp I2CWrapper.cpp myGpuFFT_lib.a
 
 
 clean:
