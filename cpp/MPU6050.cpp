@@ -68,7 +68,7 @@ void MPU6050::setup(void)
     //Sets clock source to gyro reference w/ PLL
     i2c.WriteByte(MPU6050_RA_PWR_MGMT_1, 0b00000010);
     //Controls frequency of wakeups in accel low power mode plus the sensor standby modes
-    i2c.WriteByte(MPU6050_RA_PWR_MGMT_2, 0x00);
+    i2c.WriteByte(MPU6050_RA_PWR_MGMT_2, 0b00000111);
 
     //MPU6050_RA_WHO_AM_I             //Read-only, I2C address
     i2c.WriteByte(MPU6050_RA_INT_ENABLE, 0x01);
@@ -311,7 +311,7 @@ int main(void)
          start= Microseconds();
          middle = Microseconds();
 
-         // this is the FFT 
+         // this is the FFT
          DoMyGpuFFT(InTable,OutTable,0);
 
          end=Microseconds();
